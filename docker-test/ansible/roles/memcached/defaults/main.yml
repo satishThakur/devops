@@ -1,0 +1,6 @@
+directories:
+  - /etc/memcached.d
+
+files: [
+  { src: 'memcache.properties', dest: '/etc/memcached.d/memcache.properties', mode: '0755'}
+]

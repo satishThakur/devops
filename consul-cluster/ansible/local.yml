@@ -1,0 +1,7 @@
+---
+- hosts: localhost
+  sudo: yes
+  remote_user: vagrant
+  roles:
+    - {role: consul, when: server is defined and server == "yes"}
+    - {role: consulclient, when: client is defined and client == "yes"}

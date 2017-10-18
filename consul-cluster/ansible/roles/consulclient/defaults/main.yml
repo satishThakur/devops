@@ -1,0 +1,8 @@
+logs_dir: /data/consul/logs
+data_dir: /data/consul/data
+config_dir: /data/consul/config
+
+directories:
+  - "{{ data_dir }}"
+  - "{{ config_dir }}"
+  - "{{ logs_dir }}"

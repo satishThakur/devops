@@ -1,0 +1,30 @@
+- name: Install unzip
+  apt: name=unzip state=present
+  tags: [consul]
+
+- name: Directories are created
+  file:
+    path: "{{ item }}"
+    state: directory
+  with_items: "{{ directories }}"
+  tags: [consul]
+
+- name: Download consul zip
+  shell: "cd /tmp;rm -f /tmp/consul*;wget https://releases.hashicorp.com/consul/0.6.4/consul_0.6.4_linux_amd64.zip;"
+  tags: [consul]
+
+- name: unzip consul and copy
+  unarchive: src=/tmp/consul_0.6.4_linux_amd64.zip dest=/usr/local/bin copy=no
+
+- name: Start consul instance
+  shell: "nohup consul agent \
+    -data-dir /data/consul/data \
+    -config-dir /data/consul/config \
+    -node={{ ansible_hostname }} \
+    -bind={{ip}} \
+    >{{ logs_dir }}/consul.log 2>&1 &"
+  tags: [consul]
+  
+- name: Has joined
+  shell: consul join 10.10.100.2
+  tags: [consul]

@@ -1,0 +1,8 @@
+{
+  "check": {
+    "id": "check-ssh",
+    "name": "check-ssh",
+    "script": "/usr/lib/nagios/plugins/check_ssh -t 10 -p 22 $(/sbin/ifconfig eth0 | grep 'inet addr' | awk -F: '{print $2}' | awk '{print $1}')",
+    "interval": "1m"
+  }
+}

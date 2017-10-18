@@ -1,0 +1,40 @@
+Vagrant.configure(2) do |config|
+  config.vm.box = "bento/ubuntu-16.04"
+  config.vm.provider "virtualbox" do |v|
+  	v.memory = 1024
+  end
+  
+  config.vm.define :consul1 do |consul|
+  	consul.vm.network "private_network", ip: "10.10.100.1"
+    consul.vm.network "forwarded_port", guest: 8500, host: 8500, host_ip: "127.0.0.1"
+    consul.vm.hostname = "consul1"
+  	consul.vm.provision :shell, path: "bootstrap.sh"
+    consul.vm.provision :shell,
+      inline: 'PYTHONUNBUFFERED=1 ansible-playbook /vagrant/ansible/local.yml -c local --extra-vars "ip=10.10.100.1 server=yes"'
+    consul.vm.provision :shell,inline: 'python /vagrant/consul_join.py &'
+      
+  end
+
+  config.vm.define :consul2 do |consul|
+    consul.vm.network "private_network", ip: "10.10.100.2"
+    consul.vm.hostname = "consul2"
+    consul.vm.provision :shell, path: "bootstrap.sh"
+    consul.vm.provision :shell,
+      inline: 'PYTHONUNBUFFERED=1 ansible-playbook /vagrant/ansible/local.yml -c local --extra-vars "ip=10.10.100.2 server=yes"'
+    consul.vm.provision :shell,inline: 'python /vagrant/consul_join.py &'
+  end
+
+  config.vm.define :consul3 do |consul|
+    consul.vm.network "private_network", ip: "10.10.100.3"
+    consul.vm.hostname = "consul3"
+    consul.vm.provision :shell, path: "bootstrap.sh"
+    consul.vm.provision :shell,
+      inline: 'PYTHONUNBUFFERED=1 ansible-playbook /vagrant/ansible/local.yml -c local --extra-vars "ip=10.10.100.3 server=yes"'
+    consul.vm.provision :shell,inline: 'python /vagrant/consul_join.py &'
+
+  end
+  
+  if Vagrant.has_plugin?("vagrant-cachier")
+  	config.cache.scope = :box
+  end
+end

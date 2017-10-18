@@ -1,0 +1,9 @@
+{
+  "check": {
+    "id": "check-disk",
+    "name": "Disk Check",
+    "notes": "Critical 5%, Warning 10% free",
+    "script": "/usr/lib/nagios/plugins/check_disk -w 25% -c 5%",
+    "interval": "1m"
+  }
+}

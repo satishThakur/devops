@@ -1,0 +1,13 @@
+logs_dir: /data/consul/logs
+data_dir: /data/consul/data
+config_dir: /data/consul/config
+
+directories:
+  - "{{ data_dir }}"
+  - "{{ config_dir }}"
+  - "{{ logs_dir }}"
+files: [
+  { src: 'disk-check.json', dest: "{{config_dir}}/disk-check.json", mode: '0755' },
+  { src: 'load-check.json', dest: "{{config_dir}}/load-check.json", mode: '0755' },
+  { src: 'ssh-check.json', dest: "{{config_dir}}/ssh-check.json", mode: '0755' }
+]

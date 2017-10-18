@@ -1,0 +1,9 @@
+{
+  "check": {
+    "id": "check-load",
+    "name": "Avg Load",
+    "notes": "Critical load average 2, warning load average 1",
+    "script": "/usr/lib/nagios/plugins/check_load -w 1,2,3 -c 2,3,4",
+    "interval": "1m"
+  }
+}
